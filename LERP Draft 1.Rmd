@@ -1,0 +1,244 @@
+---
+title: Literature Review and Empirical Analysis on the Economic Impact of Collective Bargaining and Labor Strikes
+author: "Matt Gola"
+date: "5/1/2020"
+output: pdf_document
+number_sections: true
+indent: true
+header-includes: 
+  - \usepackage{setspace} \doublespacing
+font_size: 12
+bibliography: LERPreferences.bib
+
+
+abstract: In this paper, I examine further studies on strikes and collective bargaining throughout the 1980s to the late 1990s and early 2000s. These studies develop and expand on three major economic concepts which set the foundation for more conclusive research in the field of labor strikes and collective bargaining. In this paper, I also examine the correlation between states that legalize collective bargaining for public sector workers and public sector weekly wages in the year 2016. I chose to focus on the public-sector as national, state, and local governments are generally the sole supplier of certain essential services which require the constant employment of public workers. I modeled this effect with an omitted variable regression and a multivariate regression. The omitted model displaye a small, positive effect of collective bargaining legality on average public sector weekly wages, however coefficient was not significant. The multivariate model displayed a slightly stronger, positive effect with significance to the weakest alpha level.
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.height = 2.5)
+library(tidyverse)
+library(ggplot2)
+library (huxtable)
+library(MASS)
+library(float)
+```
+
+\clearpage
+
+# Introduction
+
+  Despite the numerous incidences of labor strikes throughout modern history, the impact of their inceptions and durations, and the collective bargaining legislation and policy which end them, the topic of study has yet to develop a clear understanding of their impact on micro- and macro-level indicators. The sheer number of endogenous and exogenous variables which affect collective bargaining disputes in different industries with different unions, firms, profitability states, and amount of workers. Further differences arise when disputes arise in the public sector compared to the private sector. Collective bargaining legislation varies greatly between the national and state level and even more between individual states. 
+  
+  Collective bargaining describes the the process between a labor union and an employer negotiating over the terms of an employment contract for a group of workers. The goal of collective bargaining is to come to a form of agreement or compromise which will select a certain wage at a certain employment level. While the union and the employer can enter negotiations voluntarily, employees can force a meeting through a labor strike, a mass work stoppage caused by the refusal of all employees to work. 
+  
+  When this occurs firms in the private sector have several options. They can (a) meet with the labor union and come to a collective bargaining agreement (which, in itself can go several different ways depending on the outcome); (b) wait the workers out until they are forced to come back at the firm's desired employment level with a lower wage than desired; or (c) the firm can hire replacement workers to fill empty positions and leave original workers out to dry.
+  
+  In the case of the private sector, firms have more leverage to drag out negotiations and situate themselves for a more beneficial level of employment for them. However, this is not the case in the public sector. The public sector consists of national, state, and local governments. These "firms", so to speak, do not encounter the same profitability states as private sector firms do. They are the sole supplier of specific essential services for which there are no competing firms and no substitutes. If a labor strikes occurs in the private sector, collective bargaining is the only viable option to reach a compromise between employees and employer. 
+  
+  However, some states beleive certain public sector services to be too essential to properly run different levels of government that outright. In North Carolina, South Carolina, Tennessee, and Virginia it is illegal for firefighters to bargain collectively. In these same states and Georgia, it is illegal for police officers to collectively bargain. In Georgia, North Carolina, South Carolina, Virginia, and Texas it is illegal for teachers to collectively bargain. Furthermore, in four different states - Alabama, Mississippi, Wyoming, and Arizona - there is no statute or case law which set a legal precedent on collective bargaining for firefighter, police officers, or teachers. In my paper, I include these states in data as states that illegalize collective bargaining as I and other labor economists such as Janet Currie and Sheena McConnell believe no collective bargaining legislation is just as bad, if not worse, than outright illegal bargaining.
+  
+  In my empirical analysis of  collective bargaining legality on average public sector weekly wages, I states which allow firefighters, police officers, and teachers to bargain collectively tend to pay  higher average weekly wages than states without collective bargaining legislation or those which do not allow it all. 
+
+# Literature Review
+
+  Despite a long and arduous history of labor strikes and their subsequent collective bargaining agreements in the US, initial studies examining the measures of strike activity and their determinants did not begin in earnest until the late 1960s to the early 1980s. The bulk of these studies produced a myriad of conflciting results detailing the impact of strike incidences and duration on labor supply, real wages, unemployment, inflation, industry-level productivity and industry-level demand. A select few, however, focused on the root causes of labor strikes and the causes of their impacts. 
+  
+ The first of such landmark studies is Orley Ashenfelter and George Johnson's model of strike data from 1969 [@AshenfelterandJohnson1969]. The Ashenfelter-Johnson model is the first to break the assumption that union and firm are fully informed about each other's wage offer preference. Previous studies based on this assumption believed that unions and firms were capable of rational collective agreement without a strike. Ashenfelter and Johnson disagreed and instead believed in a lack of information among union members on the preferences of the firm [@Card1990]. The model proposes there are actually three parties in collective bargaining negotiations: firm management, union leadership, and union rank and file. This sets up a differing prefences between each party in the union. The leadership's objectives or the union its survival and growth as an institution, and the personal political survival of the leaders. 
+    
+ Much like a politician, union leaders encounter an optimization problem. Choose a negotiation wage target and employment level, in order to maximize the likelihood of reaching an agreement, subject to retaining leadership roles.
+    
+ If union leadership chooses a wage target and employment level the firm disagrees with, the strike continues. Longer strike durations lead to higher strike costs for the union and workers. If strike costs become untenable for the union rank and file, they will oust union leadership. Therefore, union leadership is more likely to lower its wage expectations when they experience a strike. Strikes are more likely to occur when the final union wage demand is higher. Strikes are less likely to occur when the firm's profit-to-wage-bill ratio, discount rate, and minimum wage offers are higher as this will incentivize the firm to accept the union's offer and avoid a strike [@vanderWeij2008]. 
+    
+ Ashenfelter and Johnson were groundbreaking for more than just new theoretical assumptions as well. They were the first to attempt a systematic regression analysis of strike data, providing a durable hypothesis linking strike probability to previous real wage changes [@Card1990]. Furthermore, the Ashenfelter-Johnson model set the foundation for further studies on asymmetric information in collective bargaining, specifically Beth Hayes' "Unions and Strikes with Asymmetric Information", which I will talk about later in the literature review [@Hayes1984].
+  
+  While the Ashenfelter-Johnson model allowed for more focused and nuanced studies of labor strikes and collective bargaining throughout the 1970s, in 1980, labor economist John Kennan proposed there was a 'disadvantage' inherent to its assumptions.
+  
+  In "Pareto Optimality and the Economics of Strike Duration [@Kennan1980], Kennan describes the issue with the AJ model is that it assumes a worker's resistance curve is a given; tacit information known by the firm at the outset of a labor strike. From the knowledge of this curve, the firm selects the profit-maximizing combination of wage increase and strike duration. Kennan claims that one could just as well assume that the firm's concession cuve is given, and the workers may select an optimal combination of wage increase and strike duration for themselves. 
+  
+  Kennan states, "The major theoretical defect in earlier work is the implicit assumption that either workers or firms behave systematically in an irrational way," [@Kennan1980]. Instead, he theorizes that whatever the mechanism generating disputes, the probability of a strike and the expected duration of a work stoppage will be lower, the higher the joint cost of the strike to the firm and its employees [@Card1990]. Through this perspective, Kennan builds off of the some of the main beats of the AJ model. The union and its members (the workers) have a rational incentive to strike for higher wages (or benefits or what have you) to a certain extent until the costs inherent to a strike outweight the potential benefits of wages at a different level of employment than the previous contract. Furthermore, the firm has the same rational incentive to select an adequate wage employment level which will end the strike as costs to the firm begin to outweigh the benefits of dragging out negotiations.
+  
+  Following this new theoretical insight, many studies of strike activity going into the late 80s and early 90s have attempted to control for both firm-level product demand and local labor market conditions which, when tilted to one end of the scale or the other, can increase or decrease dispute rates.
+  
+  While I believe Kennan's joint-cost hypothesis was essential in establishing the idea that strikes are the outcome of rational behavior by firms and unions, it didn't speak enough on the informational disconnect that occurs between the firm and the union. This disconnect provides another perspective on the rational reasoning behind the beginning of strikes. 
+  
+  In 1984, labor economist Beth Hayes considers the concept of information asymmetry to determine why strikes occur where and when they do in her paper, "Unions and Strikes with Asymmetric Information" [@Hayes1984].
+  
+  As stated before, asymmetric information refers to such knowledge that is known by one party in a negotiation but is not known by the other. In the case of strikes, firms have perfect knowledge of their current state of profitability while unions do not. Unions can only know the current state of the economy at large and make assumptions on how profitable the firm is at any given time.
+  
+  Given the states of high and low firm profitability (states of nature), the union can offer to work at a high wage immediately or work at a low wage after a strike of a certain length. These offers give the firm an incentive to accept the high wage when the high state occurs and the low wage when the low state occurs. The schedule of wage offers made by the union changes at the probability of a certain state occurring increases.
+  
+  With the creation of two opposing mathematical models of wage offers and employment levels made by either the firm or the union, Hayes' finds  that information asymmetries cause the union and the firm to be unable to agree on a contract without a strike.
+  
+  "Time - in the form of strikes -  is a variable that the union uses to gain information that the firm possesses," [@Hayes1984]. This information gives them more leverage to select an appopriate wage at an employment level the firm will accept. Hayes found from the model that strikes can occur in either high or low states of nature when the union can specify only wages. When negotiations involve both wages and employment levels, strikes occur only in the low state of nature. In high states, firms have an incentive to accept high wage demands by the unions, so as to continue to promote their high state of profitability. Strikes are necessary to ensure that only a firm in a low state will find it profitable to accept the original high offer made by the union. Furthermore, union expectations over possible states of nature also affect wage offers. If the union beleives the firm is occuring a high state of profitability, then original wage offers are higher. If they believe the firm is occurring a low state, the potential for longer strikes increases as longer strikes during low states of profitability will incentivize firms to accept higher offers to get employees back to work sooner.
+  
+ Hayes' paper provides the most comprehensive model on the logic and reasoning behind strikes than any other study before it. While the paper doe not provide a statistical regression offering empirical evidence of her theoretical claims, studies made building off of her model provide stronger data than other studies come before.
+ 
+ The study I find to be the most pertinent to the specific area of study in this paper is Janet Currie and Sheena McConnell's 1994 piece on the impact of collective bargaining legislation on disputes in the US public sector. The study is a more focused look on public industries than most other studies on the topic of labor strikes and collective bargaining.
+ 
+ The public sector is an under studied sub-genre in the area of strikes and bargaining. The private sector has a larger number of firms with historically more strikes than the public sector. However, the reason why the public sector happens to experience more strikes than the public sector is the main reason why further study on the topic of collective bargaining policy and legislation in the public sector is necessary. The public sector, made up of national, state, and local governments and their employees. As the government is often the sole supplier of certain essential servuces which require constant employment of public workers, there are no competing firms to pick up the demand slack when public workers strike. It is because of this important distinction between public and private sectors that legislators have been unwilling to give public sector workers the same rights as private sector workers. It was not until the 1950s that public sector workers were even allowed the right to strike and collectively bargain. However, collectie bargaining legislation has not changed or improved much over time.
+ 
+ Currie and McConnell decribe the current situation of collective bargaining legislation as being a patchwork of laws which vary greatly by state. Many states have passed laws explicitly prohibiting specific groups of essential public secotr workers from striking, instead requiring that disputes be resolved by third party arbitration. Other jurisdictions prohbit strikes without providing any alternative institutional procedures for dispute resolution, leaving workers with very few ways to bargain for better wages. However, a large portion of states allow employees to strike outright.
+ 
+ Currie and McConnell claim the purpose for their empirical study is the fact that while there is economic literature on strikes and arbitrations, exisiting bargaining models are "not sophisticated enough to make unambiguous predicitions about the impact of legislation on disputes," [@CurrieandMcConnell1994]. In terms of data, the authors utilize a large national sample of US state and local government contracts to compare the incidence and intensity of disputes by similar workers under different forms of collective bargaining legislation.
+ 
+ The key takeaways from the study began with the conclusion that there were no significant differences in strike incidence or duration in jurisdictions in which strikes are legal and those in which they are illegal. Furthermore, Currie and McConnell found that strike incidence can be reduced by switching to a regime in which employers are required to bargain in good faith an strikes are illegal, in which case employees and employers are forced to attempt collective bargaining before resorting to strikes. Furthermore, strikes were found to be least frequent and shortest in jurisdictions with arbitration.
+ 
+ Currie and McConnell found these results to be consistent with the joint-cost and asymmetric strike models of Kennan [@Kennan1980] and Hayes [@Hayes1984] respectively.
+ 
+ The authors state, "The joint-cost model suggests that strikes are less frequent when they are illegal because penalities for striking imposed by courts are added to the direct costs of strikes" in the form of output lost and foregone wages. However, Currie and McConnell's results do not appear to suggest that strikes are shorter when they are illegal, unlike a theoretical claim made in Kennan's model.
+ 
+ Information asymmetry suggests that increasing uncertainty may be a possible explanation for Currie and McConnell's finding that strikes are more frequent when employers are not required to bargain. Contract negotiations are made even more uncertain when there is no legal precedent requiring employers to bargain with workers. Unions and employees do not have the same kind of information on the firm and how they behave in such a situation. As historical precedent allows for more symmetrical information between union and firm, jurisdictions who allow for third-party arbitrators tend to have the least uncertain instances of negotiation.
+ 
+ In summation, Currie and McConnell find that while having no explicit framework for bargaining or strike resolution is certainly the worst form of policy, their results are less conclusive about the best form. While the authors claim arbitration to be a more socially beneficial policy, switching to the policy from another form significantly increases its uses, driving up costs. Furthermore, arbitration may not lead to the same wage increase at the opitmal level of employment that unions and workers are hoping for and may be able to achieve through labor strikes.
+ 
+ I believe Currie and McConnell's paper is an important milestone in the study of labor strikes and collective bargaining legislation in the public sector. However, as the public sector is severely understudied compared to the private sector, more research needs to be done in the area before truly conclusive results can be claimed. Much the same, the entirety of the labor strikes and collective bargaining field of study is understudied compared to other areas of labor economics. Defined theoretical models and conclusive results cannot be found without more scrutiny of current evidence and the development of nuanced perspectives.
+
+# Data
+
+ For my omitted variable regression, I use 2016 national data from the Bureau of Labor Statistics on average public weekly wages [@PublicEmployeeSalary2016]. I also gather data from the Center for Economic and Policy Research on the regulation of public sector collective bargaining in the states [@SanesandSchmitt2014]. To make my data simpler to understand within my regression, I considered any state that did not have any collective bargaining legislation to consider collective bargaining to be illegal for public sector groups as studies have shown no legislation is just as damaging to public sector wages as illegality. This made it easier to describe collective bargaining legality as a simpler dummy variable. Furthermore, my data from CEPR includes only collective bargaining regulation for firefighters, police officers, and teachers. I set this regulation data against average weekly wages of the entire public sector of each state as I believe these 3 groups make up a large percentage of government employees in each state and are most affected by union decisions and wage changes.
+ 
+ For my multivariate regression, I add 2016 data from the Census Bureau on total public sector employees in each state [@PublicEmployeeSalary2016]. I also add 2016 data from FRED on the gross domestic product produced by state and local governments by each state [@GeoFREDMap2016}. I add these variables to my regression as I believe the total number of public sector employees and the amount of revenue each state produces through public industry will heavily affect public sector wages. I mutated these figures into logs to make them easier to understand in the context of graphs and regressions.
+ 
+ 
+| Variable | Description |
+|----------|-------------|
+| 'WW' | Average Public Sector Weekly Wages |
+|------|------------------------------------|
+| 'CBL' | Collective Bargaining Legality. 'Illegal' label relegated to those states which illegalize collective bargaining or which do not have legislation. |
+|-------|-------------------------------------------------------------------------|
+| 'logTPE' | Log Total Public Sector Full- and Part-Time Employees |
+|-------|---------------------------------------------------|
+| 'logPSGDP' | Log Public Sector Gross Domestic Product |
+|---------|--------------------------------------|
+
+
+ In Figure 1, it can be seen that a vast majority of states allow collective bargaining for public sector groups. Only 10 states illegalize collective bargaining or do not have legislation: North Carolina, South Carolina, Arizona, Texas, Tennessee, Mississippi, Wyoming, Georgia, Virginia, and Alabama.
+ 
+ Figure 2 displays the plot of my omitted regression variables. While there is not a strong relationship, there is a clear, positive relationship between WW and CBL. States that allow public sector collective bargaining tend to have higher average public sector weekly wages. However, this relationship may be affected by exogenous variables and outliers. While all of the states with the highest wages legalize public sector collective bargaining, the states with the lowest public sector wages also legalized.
+
+ Figure 3 displays a plot of log public sector GDP against average public sector weekly wages. Much like the relationship between collective bargaining legality and average weekly wages, the relationship between GDP and weekly wages is weakly positive. States with higher public sector GDP tend to have higher average public sector weekly wages. However, there are several outliers which may skew the data.
+ 
+ Figure 4 displays a plot of log total public sector employees against average public sector weekly wages. The relationship between these variables is almost identical to the relationship found in Figure 3. States with a higher number of total public employees tend to have higher average wages. Much like Figure 3, there are several outliers which may skew the data.
+ 
+ In Figure 5 I plot a correlation table between the variables in my multivariate regression. The results display a story much like the ones presented in histogram Figures 1 through 4. There is a weak, positive correlation between average weekly wages and collective bargaining legality, log public sector GDP, and log total public employees. There is a very strong, positive relationship between log total public employees and log public sector GDP. This may suggest that a higher number of employees leads to a higher revenues in the public sector. However, this relationship would require more research. There is a weak, negative relationship between collective bargaining legality and log PSGDP and log TPE. This may suggest public sector revenue is lower in states that legalize collective bargaining. It may also suggest that state and local governments do not higher as many workers in jurisdictions where collective bargaining is allowed. These relationships between CBL may be affected by other extraneous variables that are not included in the multivariate regression and require further research.
+ 
+\clearpage
+
+```{r Creation of Dataset and Figure 1}
+library(tidyverse)
+cbdata3 <- read_csv("~/Desktop/LaborEcon Research Project/LaborEconRP4.csv")
+
+library(reshape)
+cbdata3 <- rename(cbdata3, c("Total Public Employees" = "TPE", "Average Annual Public Weekly Wage" = "WW", "Public Sector GDP (Millions of Dollars)" = "PSGDP", "Collective Bargaining Legislation Legality" = "CBL"))
+
+logcbdata3 <- cbdata3 %>%
+ mutate(logTPE = log(TPE)) %>%
+ mutate(logPSGDP = log(PSGDP))
+
+library(ggplot2)
+ggplot(cbdata3)+
+  aes(x=CBL, color=States)+
+  geom_histogram()+
+  scale_x_continuous(breaks=seq(0,1,1))
+  theme(legend.position = "none")
+```
+
+
+```{r Figure 2}
+ggplot(cbdata3)+
+  aes(x=CBL, y=WW)+
+  geom_point(aes(color="States"))+
+  geom_smooth(method="lm")+
+  labs(x="Weekly Wages", y="CBL")
+```
+
+
+```{r Figure 3}
+ggplot(logcbdata3)+
+ aes(x=WW, y=logPSGDP)+
+ geom_point(aes(color=States))+
+ geom_smooth(method="lm")+
+ labs(x="Weekly Wages", y="Public Sector GDP")+
+ theme(legend.position="none")
+```
+
+
+```{r Figure 4}
+ggplot(logcbdata3)+
+  aes(x=WW, y=logTPE)+
+  geom_point(aes(color=States))+
+  geom_smooth(method="lm")+
+  labs(x="Weekly Wages", y="Total Public Employees")+
+  theme(legend.position="none")
+```
+
+
+```{r Figure 5}
+logmultivariate_cbreg.corr <- subset(logcbdata3, select = c("WW", "CBL", "logPSGDP", "logTPE"))
+cor(logmultivariate_cbreg.corr)
+```
+
+\clearpage
+
+# Empirical Model
+
+ Equation \ref{eq:omittedregression} describes the omitted variable for my cross-sectional linear regression by state $i$.
+ 
+  \begin{equation}
+  \label{eq:omittedregression}
+  \widehat{\text{Ywages}_i = \beta_0+\beta_1 \text{CBL}_i + u_i}
+  \end{equation}
+  
+ I decided that an OLS linear regression was the most appropriate way to estimate the correlation between collective bargaining legality and average public sector weekly wages. The scatterplot of CBL against WW suggests there is a small, positive relationship between the two variables. The correlation table describes also describes slightly positive relationship
+ 
+ However, the simple linear regression model in the omitted variable equation is most likely to be affected by exogenous variables. While I believe collective bargaining legality plays an important role in public sector wages, there are many other factors which affect the wages of state and local employees. I included total public employees and public sector gross domestic product into my multivariate equation as I believe they are two of the biggest factors affecting public sector wages. In theory, a larger number of employees forces wages to be spread out thinner. Furthermore, a higher GDP may allow for greater increases in wages. Although this concept insists on the idea that firms will return a portion of those higher revenues (more profits) back to the workers in the form of raises.
+ 
+ Equation \ref{eq:multivariateregression} describes my multivariate regression, which includes the variables I deemed most likely to bias average public sector weekly wages if left in the error term.
+ 
+  \begin{equation}
+  \label{eq:multivariateregression}
+  \widehat{\text{Ywages}_i = \beta_0+\beta_1 \text{CBL}_i + \beta_2 \text{logTPE}_i + \beta_3 \text{logPSGDP}_i}
+  \end{equation}
+  
+ Total public employees and public sector GDP are intended as control variables to test the robustness of the CBL coefficient. I also ran the multivariate regression through the method of iteratively reweighted least squares as well as ordinary least squares. IRLS regression minimizes the least absolute errors rather than the least squared errors. This method checks the robustness of the regression by minimizing the effect of outliers in the data on $\beta_1$.
+ 
+ I hypothesize that states which legalize collective bargaining for the largest public sector groups experience higher public sector wages than states that illegalize or have no legislation at all. Based on a long history of studies in the are of labor strikes and collective bargaining, I am led to beleive that allowing workers to bargain for themselves through unions or similiar organizations compels firms to increase wages. Furthermore, illegalizing collective bargaining takes away the collective voice of public sector workers, allowing firms to set wages and employment levels which benefit them. This leaves firms no incentive to think of the workers as labor strikes are generally illegal for the largest, most essential public sector groups in jurisdictions where collective bargaining is also illegal. Thus I believe that $\beta_1$ > 0. I test this against the null hypothesis $\beta_1$ <= 0 with an a = 0.05.
+ 
+# Results
+
+ The results of my liner regression can be found in Table 1. The $\beta_1$ coefficieint for my omitted variable regression describes that for states that legalize collective bargaining for public sector workers, average public sector weekly wages increases by about 89 dollars. This small, positive relationship, however, is not significant at any level. Furthermore, the $R^2$ coefficient is 0.057 for the omitted regression. This means that only 5.7% of the varation in weekly average wages is explained by the variation in collective bargaining legality.
+ 
+ The results for my multivariate regression is more promising. With the inclusion of the TPE and PSGDP variables, the positive relationship between average public sector weekly wages and collective bargaining legality is increased. The $\beta_1$ coefficient for CBL is now larger and statisically significant to the 0.05 alpha level. While this is still a weak significance, it is an interesting result given the relative significance of the other variables. Log total public employees is shown to have a fairly large, negative, and statistically significant relationship with average public sector weekly wages. Suggesting, much like the correlation table, that as weekly wages rise, the number of total employees tends to decrease. This may also mean that states with less employees tend to pay higher wages. Log public sector GDP is shown to have a fairly large, positive relationship with average weekly wages. This relationship is important as it is statistically significant to the 0.01 alpha level, the highest significance of any variable in my regression. This may suggest that as public sector revenues increase, state and local governments tend to pay higher wages. The multivariate regression presented an $R^2$ score of 0.308, meaning 30.8% of the variation in average weekly wages is explained by the variation in the independent variables. While this figure is still low compared to more robust models, its relative strength compared to the omitted regression is promising nonetheless.
+ 
+ The robust regression, a test less affected by extraneous outliers than the multivariate regression, presents results just as significant, if not more than the non-robust model. Based on each variable's coefficient's standard error, both CBL and logTPE are statistically significant to the lowest alpha level. The coefficient of $\beta_3$, logPSGDP, garners a slightly higher z-score than its multivariate counterpart. However, it is still only statistically significant to the second alpha level.
+ 
+ One issue I find with my results, however, is a high level of collinearity between predictor variable. Figure 6 displays my variance inflation factor (VIF). This factor quanitifies the severity of multicollinearity in an ordinary least squares regression analysis (i.e. my omitted and multivariate regression models). It provides an index that measures how much the variance of an estimated regression coefficient is increase because of collinearity. VIF scores of 10 or more are considered high levels of collinearity. While the CBL variable has a normal amount of multicollinearity, the logTPE and logPSGDP variables presented scores of more than 16. This means that the standard error for these variable's coefficients are 4 times larger than if they had 0 correlation with the other predictor variables. However, as these variables are control variables and are not the variable of interest in this regression, this high level of multicollinearity can be ignored.
+ 
+ The results of the multivariate regression are interesting as they tell a different story than the correlation table presented in Figure 5. The correlation table suggested there was a small, negative relationship between logTPE and logPSGDP. However, the addition of these variables in the multivariate regression only strengthen the relationship between CBL and WW. These results may suggest that there are more exongenous variables that further explain the relationship between CBL and WW. More research on this topic is required to fully understand the effect of collective bargaining legislation and legality on average public sector weekly wages, among variables such as strike incidences and duration.
+ 
+
+```{r Linear Regressions and VIF}
+library(huxtable)
+omitted_cbreg <- lm(WW ~ CBL, data = cbdata3)
+
+logmultivariate_cbreg <- lm(WW ~ CBL+logTPE+logPSGDP, data=logcbdata3)
+
+logrobust_cbreg <- rlm(WW ~ CBL+logTPE+logPSGDP, data=logcbdata3)
+
+huxreg("Omitted" = omitted_cbreg, "Multivariate" = logmultivariate_cbreg, "Log Robust" = logrobust_cbreg, number_format = 3)
+
+library(car)
+vif(logmultivariate_cbreg)
+```
+ 
+# Conclusion
+  
+  Due to the 0.05 $alpha$ level constraint, my alternative hypothesis is correct. My results suggest that states which legalize collective bargaining legislation for the largest public sector worker groups tend to pay higher average public sector weekly wages. However, this positive result only encourages further research in the area.
+  
+  The inclusion of log total public employees and log public sector GDP as control variables strengthened the relationship between collective bargaining legality and average weekly wages. I suspect there are more variables which may affect the relationship between these two variables of interest. 
+  
+  A larger amount of data may also help to shed more light on the subject. This paper only observed data from state and local governments in the year 2016. A time-series or panel data analysis incorporates far more data across many different years. While collective bargaining legislation has not changed drastically in recent years, average public sector weekly wages, total public employees, public sector GDP, and other variables may have changed more. Observing these supposed changes may affect the relationships between variables.
+
+\clearpage
+
+# References
